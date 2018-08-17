@@ -1,32 +1,38 @@
 <div class="py-5">
-        <div class="row">
-          <div class="col-md-6 mx-auto">
-            <span class="anchor" id="formLogin"></span>
-      
-            <!-- form card login -->
-            <div class="card rounded-0">
-              <div class="card-header">
-                <h3 class="mb-0">Login</h3>
-              </div>
-              <div class="card-body">
-                <form class="form">
-                  <div class="form-group">
-                    <label for="">Username</label>
-                    <input type="text" class="form-control rounded-0" [(ngModel)]="loginUserData.email" name="email" required>
-                  </div>
-                  <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control rounded-0" [(ngModel)]="loginUserData.password" name="password" required>
-                  </div>
-                  <button type="button" (click)="loginUser()" class="btn btn-success float-right">Login</button>
-                </form>
-              </div>
-              <!--/card-block-->
-            </div>
-            <!-- /form card login -->
-      
-          </div>
-      
-      
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <span class="anchor" id="formLogin"></span>
+
+      <!-- form card login -->
+      <div class="card rounded-0">
+        <div class="card-header">
+          <h3 class="mb-0">Login</h3>
         </div>
+        <div class="card-body">
+          <!-- Error loading events -->
+          <p *ngIf="loginError" class="alert alert-danger">
+            <strong>Oops!</strong> {{loginErrorMessage}}.
+          </p>
+          <form class="form" #loginForm="ngForm">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" class="form-control rounded-0" placeholder="me@example.com" [(ngModel)]="loginUserData.email" name="email" #email="ngModel" required>
+              <p *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">Please provide an email</p>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" class="form-control rounded-0" [(ngModel)]="loginUserData.password" name="password" #password="ngModel" required>
+              <p *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">Please provide a password</p>
+            </div>
+            <button type="button" (click)="loginUser()" class="btn btn-success float-right" [disabled]="loginForm.invalid">Login</button>
+          </form>
+        </div>
+        <!--/card-block-->
       </div>
+      <!-- /form card login -->
+
+    </div>
+
+
+  </div>
+</div>
