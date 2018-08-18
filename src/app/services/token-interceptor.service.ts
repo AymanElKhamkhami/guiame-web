@@ -17,6 +17,8 @@ export class TokenInterceptorService implements HttpInterceptor {
       }
     });
     
-    return next.handle(tokenizedReq);
+    return next
+      .handle(tokenizedReq);
+      //.finally(() => this.);
   }
 }

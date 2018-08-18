@@ -3,6 +3,8 @@
     <div class="col-md-6 mx-auto">
       <span class="anchor" id="formLogin"></span>
 
+
+
       <!-- form card login -->
       <div class="card rounded-0">
         <div class="card-header">
@@ -16,12 +18,14 @@
           <form class="form" #loginForm="ngForm">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" class="form-control rounded-0" placeholder="me@example.com" [(ngModel)]="loginUserData.email" name="email" #email="ngModel" required>
+              <input type="email" id="email" class="form-control rounded-0" placeholder="me@example.com" [(ngModel)]="loginUserData.email"
+                name="email" #email="ngModel" required>
               <p *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">Please provide an email</p>
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input type="password" class="form-control rounded-0" [(ngModel)]="loginUserData.password" name="password" #password="ngModel" required>
+              <input type="password" class="form-control rounded-0" [(ngModel)]="loginUserData.password" name="password" #password="ngModel"
+                required>
               <p *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">Please provide a password</p>
             </div>
             <button type="button" (click)="loginUser()" class="btn btn-success float-right" [disabled]="loginForm.invalid">Login</button>
@@ -33,6 +37,11 @@
 
     </div>
 
+    <div *ngIf="loading" class="modal">
+      <div class="loading-indicator">
+        <mat-spinner mode="indeterminate" diameter="60"></mat-spinner>
+      </div>
+    </div>
 
   </div>
 </div>

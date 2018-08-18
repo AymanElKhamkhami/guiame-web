@@ -13,10 +13,11 @@ export class LoginComponent implements OnInit {
   loginUserData = { email: null, password: null };
   //validPassword: boolean = true;
   //validEmail: boolean = true;
-  loginError: boolean = false;
+  loginError: boolean;
   //emailErrorMessage = 'Please provide an email with a correct format (ex: me@example.com)';
   //passwordErrorMessage;
   loginErrorMessage;
+  loading: boolean;
 
   constructor(private _auth: AuthenticationService, private _router: Router) { }
 
@@ -42,15 +43,19 @@ export class LoginComponent implements OnInit {
     //this.validateEmail();
 
     //if (this.validEmail) {
+      
+      this.loading = true;
       this._auth.loginUser(this.loginUserData)
         .subscribe(
           res => {
             console.log(res);
+            this.loading = false;
             localStorage.setItem('token', res.token);
             this._router.navigate(['/home']);
           },
           err => {
             console.log(err);
+            this.loading = false;
             if (err instanceof HttpErrorResponse) {
               if (err.status === 401) {
                 if (err.error.message.toLowerCase() === 'invalid email') {
@@ -67,7 +72,7 @@ export class LoginComponent implements OnInit {
         );
     //}
 
-
+    
   }
 
 }

@@ -5,6 +5,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 //Modules
 import { AppRoutingModule } from './routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
 
 //Components
 import { AppComponent } from './app.component';
@@ -28,7 +30,9 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [
     AuthenticationService,
