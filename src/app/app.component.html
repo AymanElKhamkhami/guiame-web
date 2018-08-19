@@ -17,21 +17,18 @@
       </li>
     </ul>
     <ul class="navbar-nav">
-      <!--
-        <a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
-        <a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/register" routerLinkActive="active">Register</a> -->
-        
-        <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
-        <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
-        <!-- <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()" (click)="_authService.logoutUser()">Logout</a>         -->
+        <a *ngIf="!_authService.loggedIn()" class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+        <a *ngIf="!_authService.loggedIn()" class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
+        <a *ngIf="_authService.loggedIn()" class="nav-link" ><strong>Hi {{_authService.displayName}}!</strong></a>        
+        <a *ngIf="_authService.loggedIn()" class="nav-link" style="cursor: pointer" (click)="_authService.logoutUser()">Logout</a>        
     </ul>
   </div>
 </nav>    
 <div class="container">
   <router-outlet></router-outlet>
-  <footer>
-      <p class="text-center">
-          {{title}} - {{date}}
-      </p>
-  </footer>
 </div>
+<footer class="footer">
+    <p class="mt-5 mb-3 text-muted text-center">
+        {{title}} - {{date}}
+    </p>
+</footer>

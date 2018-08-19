@@ -17,17 +17,20 @@
           </p>
           <form class="form" #loginForm="ngForm">
             <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" class="form-control rounded-0" placeholder="me@example.com" [(ngModel)]="loginUserData.email"
-                name="email" #email="ngModel" required>
+              <input type="email" id="inputEmail" class="form-control rounded-0" placeholder="Email address" [(ngModel)]="loginUserData.email"
+                name="email" #email="ngModel" required autofocus>
               <p *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">Please provide an email</p>
             </div>
             <div class="form-group">
-              <label>Password</label>
-              <input type="password" class="form-control rounded-0" [(ngModel)]="loginUserData.password" name="password" #password="ngModel"
-                required>
+              <input type="password" id="inputPassword" class="form-control rounded-0" placeholder="Password" [(ngModel)]="loginUserData.password" name="password"
+                #password="ngModel" required>
               <p *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">Please provide a password</p>
             </div>
+            <div class="checkbox mb-3">
+                <label>
+                  <input type="checkbox" value="remember-me"> Remember me
+                </label>
+              </div>
             <button type="button" (click)="loginUser()" class="btn btn-success float-right" [disabled]="loginForm.invalid">Login</button>
           </form>
         </div>
@@ -37,7 +40,7 @@
 
     </div>
 
-    <div *ngIf="loading" class="modal">
+    <div *ngIf="loading" class="modal fade show">
       <div class="loading-indicator">
         <mat-spinner mode="indeterminate" diameter="60"></mat-spinner>
       </div>

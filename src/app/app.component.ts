@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from './services/authentication.service';
+import { Auth0Service } from './services/auth0.service';
 
 //This is a decorator, it specifies that the 'AppComponent' class is not just a plain class, but a class representing component
 @Component({
@@ -9,4 +11,6 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'guíame';
   date = (new Date()).getFullYear();
+
+  constructor(private _authService: AuthenticationService) { }
 }

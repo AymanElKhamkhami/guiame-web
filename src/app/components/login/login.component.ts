@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+
 import { AuthenticationService } from '../../services/authentication.service';
-import { HttpErrorResponse } from '../../../../node_modules/@angular/common/http';
+//import { Auth0Service } from '../../services/auth0.service';
 
 @Component({
   selector: 'app-login',
@@ -11,68 +13,75 @@ import { HttpErrorResponse } from '../../../../node_modules/@angular/common/http
 export class LoginComponent implements OnInit {
 
   loginUserData = { email: null, password: null };
-  //validPassword: boolean = true;
-  //validEmail: boolean = true;
   loginError: boolean;
-  //emailErrorMessage = 'Please provide an email with a correct format (ex: me@example.com)';
-  //passwordErrorMessage;
   loginErrorMessage;
   loading: boolean;
 
-  constructor(private _auth: AuthenticationService, private _router: Router) { }
+  constructor(/*private _auth0: Auth0Service,]*/ private _auth: AuthenticationService, private _router: Router) { }
 
   ngOnInit() {
   }
 
-  // onEmailChange(newValue) {
-  //   this.validateEmail();
-  // }
-
-  // validateEmail() {
-  //   let value = this.loginUserData.email;
-  //   const validEmailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  //   if (validEmailRegEx.test(value)) {
-  //     this.validEmail = true;
-  //   } else {
-  //     this.validEmail = false;
-  //   }
-  // }
-
-
   loginUser() {
-    //this.validateEmail();
-
-    //if (this.validEmail) {
-      
-      this.loading = true;
-      this._auth.loginUser(this.loginUserData)
-        .subscribe(
-          res => {
-            console.log(res);
-            this.loading = false;
-            localStorage.setItem('token', res.token);
-            this._router.navigate(['/home']);
-          },
-          err => {
-            console.log(err);
-            this.loading = false;
-            if (err instanceof HttpErrorResponse) {
-              if (err.status === 401) {
-                if (err.error.message.toLowerCase() === 'invalid email') {
-                  this.loginError = true;
-                  this.loginErrorMessage = 'We don\'t recognize the email you entered';
-                }
-                if (err.error.message.toLowerCase() === 'invalid password') {
-                  this.loginError = true;
-                  this.loginErrorMessage = 'The password you entered does not match your email';
-                }
-              }
-            }
-          }
-        );
-    //}
-
-    
+    this.loading = true;
+    this._auth.loginUser(this.loginUserData)
+      .then(res => {
+        console.log(res);
+        this.loading = false;
+        this._auth.displayName = 'firebase';
+        this._router.navigate(['/home']);
+      },
+        err => {
+          console.log(err);
+          this.loading = false;
+          this.loginError = true;
+          this.loginErrorMessage = err.message;
+        });
   }
+
+
+  //auth0 login
+  // loginUser() {
+  //   this.loading = true;
+  //   this._auth0.login();
+  //   this._auth0.authenticated = true;
+  //   this.loading = false;
+  // }
+
+  //local login
+  // loginUser() {
+  //   this.loading = true;
+  //   this._auth.loginUser(this.loginUserData)
+  //     .subscribe(
+  //       res => {
+  //         console.log(res);
+  //         this.loading = false;
+  //         this._auth.name = res.userData.name;
+  //         localStorage.setItem('token', res.token);
+
+  //         this._router.navigate(['/home']);
+  //       },
+  //       err => {
+  //         console.log(err);
+  //         this.loading = false;
+  //         if (err instanceof HttpErrorResponse) {
+  //           if (err.status === 401) {
+  //             if (err.error.message.toLowerCase() === 'invalid email') {
+  //               this.loginError = true;
+  //               this.loginErrorMessage = 'We don\'t recognize the email you entered';
+  //             }
+  //             if (err.error.message.toLowerCase() === 'invalid password') {
+  //               this.loginError = true;
+  //               this.loginErrorMessage = 'The password you entered does not match your email';
+  //             }
+  //           }
+  //           else {
+  //             this.loginError = true;
+  //             this.loginErrorMessage = 'Something failed :/ Please try again';
+  //           }
+  //         }
+  //       }
+  //     );
+  // }
 
 }
