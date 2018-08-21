@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { AuthenticationService } from '../../services/authentication.service';
-//import { Auth0Service } from '../../services/auth0.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +16,7 @@ export class LoginComponent implements OnInit {
   loginErrorMessage;
   loading: boolean;
 
-  constructor(/*private _auth0: Auth0Service,]*/ private _auth: AuthenticationService, private _router: Router) { }
+  constructor(private _auth: AuthenticationService, private _router: Router) { }
 
   ngOnInit() {
   }
@@ -28,7 +27,7 @@ export class LoginComponent implements OnInit {
       .then(res => {
         console.log(res);
         this.loading = false;
-        this._auth.displayName = 'firebase';
+        this._auth.displayName = res.user.displayName;// 'firebase';
         this._router.navigate(['/home']);
       },
         err => {
@@ -39,14 +38,6 @@ export class LoginComponent implements OnInit {
         });
   }
 
-
-  //auth0 login
-  // loginUser() {
-  //   this.loading = true;
-  //   this._auth0.login();
-  //   this._auth0.authenticated = true;
-  //   this.loading = false;
-  // }
 
   //local login
   // loginUser() {

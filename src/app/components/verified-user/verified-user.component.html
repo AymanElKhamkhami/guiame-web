@@ -1,0 +1,8 @@
+<p *ngIf="expired" class="alert-danger">
+  <strong>Try verifying your email again</strong>
+  <br>Your request to verify your email has expired or the link has already been used
+</p>
+<p *ngIf="valid" class="alert-info">
+  <strong>Your email has been verified</strong>
+  <br>You can now sign in with your new account
+</p>

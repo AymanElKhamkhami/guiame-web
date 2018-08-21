@@ -20,12 +20,12 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { VerifiedUserComponent } from './components/verified-user/verified-user.component';
 
 //Services
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './services/auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
-import { Auth0Service } from './services/auth0.service';
 import { initializeApp } from '../../node_modules/firebase';
 
 
@@ -35,7 +35,8 @@ import { initializeApp } from '../../node_modules/firebase';
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    VerifiedUserComponent
   ],
   imports: [
     BrowserModule,
@@ -55,8 +56,7 @@ import { initializeApp } from '../../node_modules/firebase';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
-    },
-    Auth0Service
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 // import { Observable } from 'rxjs';
 import { CanActivate, Router } from '@angular/router';
 import { AuthenticationService } from './authentication.service';
-import { Auth0Service } from './auth0.service';
 
 @Injectable({
   providedIn: 'root'

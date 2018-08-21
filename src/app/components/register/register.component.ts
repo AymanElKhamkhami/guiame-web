@@ -21,14 +21,28 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
+
   registerUser() {
+    // this._auth.varifyEmail(this.registerUserData)
+    //   .then(res => {
+    //     console.log(res);
+    //     this.registerError = true;
+    //     this.registerErrorMessage = 'Verification email sent!';
+    //   },
+    //     err => {
+    //       console.log(err);
+    //       this.registerError = true;
+    //       this.registerErrorMessage = 'Error sending verification email';
+    //     });
+
+
     this.loading = true;
     this._auth.registerUser(this.registerUserData)
       .then(res => {
         console.log(res);
         this.loading = false;
         this._auth.displayName = 'firebase';
-        this._router.navigate(['/home']);
+        this._router.navigate(['/login']);
       },
         err => {
           console.log(err);
