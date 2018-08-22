@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,31 +13,17 @@ export class AuthenticationService {
   private _loginUrl = 'http://localhost:3000/users/login';
   private _registerUrl = 'http://localhost:3000/users/register';
   displayName = 'user';
+  user: firebase.User;
+  private _authSubsription: Subscription;
+  emailSent: boolean;
 
 
-  constructor(private _http: HttpClient, private _router: Router, private _firebaseAuth: AngularFireAuth) { }
-
-  // varifyEmail(userRegisterData) {
-  //   const actionCodeSettings = {
-  //     url: 'https://localhost:4200/',
-  //     handleCodeInApp: true,
-  //     android: {
-  //       packageName: 'com.example.android',
-  //       installApp: true,
-  //       minimumVersion: '12'
-  //     }
-  //   };
-
-  //   return new Promise<any>((resolve, reject) => {
-  //     firebase.auth().sendSignInLinkToEmail(userRegisterData.email, actionCodeSettings)
-  //       .then(res => {
-  //         localStorage.setItem('emailForRegistration', userRegisterData.email);
-  //         resolve(res);
-  //     }, err => reject(err))
-  //   });
-    
-
-  // }
+  constructor(private _http: HttpClient, private _router: Router, private _firebaseAuth: AngularFireAuth) {
+    this._authSubsription = _firebaseAuth.authState.subscribe( user => {
+      if (user) { this.user = user }
+      if(!user) { this.user = null }
+    });
+  }
 
   registerUser(userRegisterData) {
     return new Promise<any>((resolve, reject) => {
@@ -49,10 +36,10 @@ export class AuthenticationService {
   }
 
   verifyUser() {
-    var user = firebase.auth().currentUser;
-    user.sendEmailVerification()
-      .then(function() {
-        window.alert('Email sent!');
+    //var user = firebase.auth().currentUser;
+    this.user.sendEmailVerification()
+      .then(function () {
+        this.emailSent = true;
       });
   }
 
@@ -68,20 +55,27 @@ export class AuthenticationService {
   }
 
   loggedIn() {
-    var user = firebase.auth().currentUser;
-    if(user && user.emailVerified)
-      return true;
+    // var user = firebase.auth().currentUser;
+    // if (user && user.emailVerified)
+    //   return true;
 
-    return false;
+    // return false;
+
+    return this.user;
   }
 
 
   logoutUser() {
-    firebase.auth().signOut().then(function () {
-      this._router.navigate(['/login']);
-    }).catch(function (err) {
-      console.log(err);
-    });
+    let me = this;
+    this._authSubsription.unsubscribe();
+    //firebase.auth().signOut().then(function () {
+      //me._router.navigate(['/']);
+    //}).catch(function (err) {
+    //  console.log(err);
+    //});
+
+    this._firebaseAuth.auth.signOut();
+    
   }
 
   //local registration

@@ -27,6 +27,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './services/auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { initializeApp } from '../../node_modules/firebase';
+import { DefaultComponent } from './components/default/default.component';
 
 
 
@@ -36,8 +37,12 @@ import { initializeApp } from '../../node_modules/firebase';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    VerifiedUserComponent
+    VerifiedUserComponent,
+    DefaultComponent
   ],
+  // entryComponents: [ //for modal components
+  //   RegisterComponent
+  // ],
   imports: [
     BrowserModule,
     FormsModule,

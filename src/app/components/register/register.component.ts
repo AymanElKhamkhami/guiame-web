@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router'
+import { MatDialogRef } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -15,7 +16,7 @@ export class RegisterComponent implements OnInit {
   registerErrorMessage;
   loading: boolean;
 
-  constructor(private _auth: AuthenticationService,
+  constructor(private _dialogRef: MatDialogRef<RegisterComponent>, private _auth: AuthenticationService,
     private _router: Router) { }
 
   ngOnInit() {
@@ -35,14 +36,16 @@ export class RegisterComponent implements OnInit {
     //       this.registerErrorMessage = 'Error sending verification email';
     //     });
 
-
+    
+    this.registerError = false;
     this.loading = true;
     this._auth.registerUser(this.registerUserData)
       .then(res => {
         console.log(res);
         this.loading = false;
         this._auth.displayName = 'firebase';
-        this._router.navigate(['/login']);
+        this._dialogRef.close();
+        //this._router.navigate(['/']);
       },
         err => {
           console.log(err);

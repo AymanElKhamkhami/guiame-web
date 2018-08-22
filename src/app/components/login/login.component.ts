@@ -1,8 +1,8 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
-
+import { MatDialogRef } from '@angular/material';
 import { AuthenticationService } from '../../services/authentication.service';
+
 
 @Component({
   selector: 'app-login',
@@ -16,19 +16,21 @@ export class LoginComponent implements OnInit {
   loginErrorMessage;
   loading: boolean;
 
-  constructor(private _auth: AuthenticationService, private _router: Router) { }
+  constructor(private _dialogRef: MatDialogRef<LoginComponent>, private _auth: AuthenticationService, private _router: Router) { }
 
   ngOnInit() {
   }
 
   loginUser() {
+    this.loginError = false;
     this.loading = true;
     this._auth.loginUser(this.loginUserData)
       .then(res => {
-        console.log(res);
+        //console.log(res);
         this.loading = false;
-        this._auth.displayName = res.user.displayName;// 'firebase';
+        this._auth.displayName = 'firebase';//res.user.displayName;// 
         this._router.navigate(['/home']);
+        this._dialogRef.close();
       },
         err => {
           console.log(err);
