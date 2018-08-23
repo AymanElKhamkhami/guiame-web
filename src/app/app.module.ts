@@ -28,6 +28,7 @@ import { AuthGuard } from './services/auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { initializeApp } from '../../node_modules/firebase';
 import { DefaultComponent } from './components/default/default.component';
+import { PromptComponent } from './components/prompt/prompt.component';
 
 
 
@@ -38,11 +39,12 @@ import { DefaultComponent } from './components/default/default.component';
     LoginComponent,
     RegisterComponent,
     VerifiedUserComponent,
-    DefaultComponent
+    DefaultComponent,
+    PromptComponent
   ],
-  // entryComponents: [ //for modal components
-  //   RegisterComponent
-  // ],
+  entryComponents: [ //for modal components showed in app.component ngOnInit
+    PromptComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,

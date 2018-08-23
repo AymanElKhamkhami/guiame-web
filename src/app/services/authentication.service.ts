@@ -3,19 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { BehaviorSubject } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  displayName = 'null';
-  emailSent: boolean;
+  displayName: string;
+  emailSent: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  userVerified: boolean = true;
   private _user: firebase.User = null;
 
 
-  constructor(private _router: Router, private firebaseAuth: AngularFireAuth) {
-  }
+  constructor(private _router: Router, private firebaseAuth: AngularFireAuth) { }
 
 
   registerUser(userRegisterData) {
@@ -30,10 +31,13 @@ export class AuthenticationService {
 
 
   verifyUser() {
-    //var user = firebase.auth().currentUser;
-    this._user.sendEmailVerification()
+    var currentUser = firebase.auth().currentUser;
+    var me = this;
+    currentUser.sendEmailVerification()
       .then(function () {
-        this.emailSent = true;
+        //me.emailSent = true;
+        //me.emailSent = new BehaviorSubject<boolean>(true);
+        me.emailSent.next(true);
       });
   }
 
@@ -71,7 +75,16 @@ export class AuthenticationService {
 
 
   updateAuthState(user) {
-    this._user = user;
+    if (user) {
+      if (user.emailVerified) {
+        this._user = user;
+      } else {
+        this._user = null;
+      }
+      this.userVerified = user.emailVerified;
+    } else {
+      this._user = user;
+    }
   }
 
 

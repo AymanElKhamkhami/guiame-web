@@ -6,7 +6,7 @@
 
 
       <!-- form card login -->
-      <div class="card rounded-0">
+      <div class="card">
         <div class="card-header">
           <h3 class="mb-0">Login</h3>
         </div>
@@ -14,6 +14,7 @@
           <!-- Error loading events -->
           <p *ngIf="loginError" class="alert alert-danger">
             <strong>Oops!</strong> {{loginErrorMessage}}.
+            <a *ngIf="!_auth.userVerified" href="#" class="alert-link" (click)="_auth.verifyUser()"><br>Re-send verification email?</a>
           </p>
           <form class="form" #loginForm="ngForm">
             <div class="form-group">

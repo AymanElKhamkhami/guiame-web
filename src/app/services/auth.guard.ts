@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
 
     return this.firebaseAuth.authState.map((user) => {
       //Note that this will still keep unverified users in the localStorage (We need to keep those data in case we need it to re-send verification email for example)
-      this._authService.updateAuthState(user.emailVerified ? user : null);
+      this._authService.updateAuthState(user);
       if (user && user.emailVerified) {
         this._authService.displayName = user.email.split('@')[0];
         if (state.url == '/') {
