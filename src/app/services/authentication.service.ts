@@ -51,7 +51,9 @@ export class AuthenticationService {
 
 
   isLoggedIn() {
-    return firebase.auth().currentUser;
+    // let currentUser = firebase.auth().currentUser;
+    // return currentUser && currentUser.emailVerified;
+    return this._user;
   }
 
 
@@ -59,7 +61,7 @@ export class AuthenticationService {
     let me = this;
 
     firebase.auth().signOut().then(function () {
-      //me._user = null;
+      me._user = null;
       me._router.navigate(['/']);
     }).catch(function (err) {
       console.log(err);
