@@ -3,27 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  private _loginUrl = 'http://localhost:3000/users/login';
-  private _registerUrl = 'http://localhost:3000/users/register';
-  displayName = 'user';
-  user: firebase.User;
-  private _authSubsription: Subscription;
+  displayName = 'null';
   emailSent: boolean;
+  private _user: firebase.User = null;
 
 
-  constructor(private _http: HttpClient, private _router: Router, private _firebaseAuth: AngularFireAuth) {
-    this._authSubsription = _firebaseAuth.authState.subscribe( user => {
-      if (user) { this.user = user }
-      if(!user) { this.user = null }
-    });
+  constructor(private _router: Router, private firebaseAuth: AngularFireAuth) {
   }
+
 
   registerUser(userRegisterData) {
     return new Promise<any>((resolve, reject) => {
@@ -35,17 +28,19 @@ export class AuthenticationService {
     });
   }
 
+
   verifyUser() {
     //var user = firebase.auth().currentUser;
-    this.user.sendEmailVerification()
+    this._user.sendEmailVerification()
       .then(function () {
         this.emailSent = true;
       });
   }
 
-  loginUser(userLoginData) {
+
+  login(userLoginData) {
     return new Promise<any>((resolve, reject) => {
-      firebase.auth().signInAndRetrieveDataWithEmailAndPassword(userLoginData.email, userLoginData.password)
+      firebase.auth().signInWithEmailAndPassword(userLoginData.email, userLoginData.password)
         .then(res => {
           res.user.emailVerified ? resolve(res) : reject({
             message: 'Email not verified'
@@ -54,29 +49,29 @@ export class AuthenticationService {
     });
   }
 
-  loggedIn() {
-    // var user = firebase.auth().currentUser;
-    // if (user && user.emailVerified)
-    //   return true;
 
-    // return false;
-
-    return this.user;
+  isLoggedIn() {
+    return firebase.auth().currentUser;
   }
 
 
-  logoutUser() {
+  logout() {
     let me = this;
-    this._authSubsription.unsubscribe();
-    //firebase.auth().signOut().then(function () {
-      //me._router.navigate(['/']);
-    //}).catch(function (err) {
-    //  console.log(err);
-    //});
 
-    this._firebaseAuth.auth.signOut();
-    
+    firebase.auth().signOut().then(function () {
+      //me._user = null;
+      me._router.navigate(['/']);
+    }).catch(function (err) {
+      console.log(err);
+    });
+
   }
+
+
+  updateAuthState(user) {
+    this._user = user;
+  }
+
 
   //local registration
   // registerUser(userRegisterData) {

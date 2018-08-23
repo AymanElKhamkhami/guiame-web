@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit {
       .then(res => {
         console.log(res);
         this.loading = false;
-        this._auth.displayName = 'firebase';
+        //this._auth.displayName = 'firebase';
         this._dialogRef.close();
         //this._router.navigate(['/']);
       },

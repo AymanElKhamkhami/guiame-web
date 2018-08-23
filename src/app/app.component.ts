@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { AuthenticationService } from './services/authentication.service';
 import { RegisterComponent } from './components/register/register.component';
@@ -16,11 +16,7 @@ export class AppComponent {
   registerDialogRef: MatDialogRef<RegisterComponent>;
   loginDialogRef: MatDialogRef<LoginComponent>;
 
-  @ViewChild(LoginComponent) loginC: LoginComponent;
-
-  constructor(private _dialog: MatDialog, private _authService: AuthenticationService) { 
-    
-  }
+  constructor(private _dialog: MatDialog, private _authService: AuthenticationService) { }
 
   showRegister() {
     this.registerDialogRef = this._dialog.open(RegisterComponent, {

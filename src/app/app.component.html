@@ -17,10 +17,10 @@
       </li>
     </ul>
     <ul class="navbar-nav">
-        <a *ngIf="!_authService.loggedIn()" class="nav-link" style="cursor: pointer" (click)="showLogin()">Login</a> <!--routerLink="/login" routerLinkActive="active"-->
-        <a *ngIf="!_authService.loggedIn()" class="nav-link" style="cursor: pointer" (click)="showRegister()">Register</a> <!--routerLink="/register"  routerLinkActive="active"-->
-        <a *ngIf="_authService.loggedIn()" class="nav-link" ><strong>Hi {{_authService.displayName}}!</strong></a>        
-        <a *ngIf="_authService.loggedIn()" class="nav-link" style="cursor: pointer" (click)="_authService.logoutUser()">Logout</a>        
+        <a *ngIf="!_authService.isLoggedIn()" class="nav-link" style="cursor: pointer" (click)="showLogin()">Login</a> <!--routerLink="/login" routerLinkActive="active"-->
+        <a *ngIf="!_authService.isLoggedIn()" class="nav-link" style="cursor: pointer" (click)="showRegister()">Register</a> <!--routerLink="/register" routerLinkActive="active"-->
+        <a *ngIf="_authService.isLoggedIn()" class="nav-link" ><strong>Hi {{_authService.displayName}}!</strong></a>        
+        <a *ngIf="_authService.isLoggedIn()" class="nav-link" style="cursor: pointer" (click)="_authService.logout()">Logout</a>        
     </ul>
   </div>
 </nav>    

@@ -24,13 +24,13 @@ const routes: Routes = [
   // },
 
   
-  { path: "", component: DefaultComponent, canActivate: [AuthGuard] },
-  { path: "home", component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', component: DefaultComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
 
   //{ path: '/', component: AppComponent },
-  { path: "login", component: LoginComponent },
-  { path: "register", component: RegisterComponent },
-  { path: "auth", component: VerifiedUserComponent/*, canActivate: [AuthGuard]*/ },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'auth', component: VerifiedUserComponent/*, canActivate: [AuthGuard]*/ },
   //   {
   //     path: "",
   //     component: SidebarComponent,

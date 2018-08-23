@@ -24,11 +24,11 @@ export class LoginComponent implements OnInit {
   loginUser() {
     this.loginError = false;
     this.loading = true;
-    this._auth.loginUser(this.loginUserData)
+    this._auth.login(this.loginUserData)
       .then(res => {
         //console.log(res);
         this.loading = false;
-        this._auth.displayName = 'firebase';//res.user.displayName;// 
+        //this._auth.displayName = res.user.email.split('@')[0];// 
         this._router.navigate(['/home']);
         this._dialogRef.close();
       },
