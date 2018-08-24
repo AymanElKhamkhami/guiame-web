@@ -14,7 +14,7 @@ export class PromptComponent implements OnInit {
   constructor(private _dialogRef: MatDialogRef<PromptComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { 
     switch(this.data.promptType) {
       case 'emailSent':
-        this.title ='A verification link has been sent to your email account';
+        this.title ='A verification link has been sent to you';
         this.message = 'Please click on the link that has just been sent to your email account to verify your email and continue the registration perocess.'
         break;
       default:

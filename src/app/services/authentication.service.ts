@@ -43,13 +43,19 @@ export class AuthenticationService {
 
 
   login(userLoginData) {
+    this.userVerified = true;
     return new Promise<any>((resolve, reject) => {
       firebase.auth().signInWithEmailAndPassword(userLoginData.email, userLoginData.password)
         .then(res => {
-          res.user.emailVerified ? resolve(res) : reject({
-            message: 'Email not verified'
-          });
-        }, err => reject(err))
+          if (res.user.emailVerified) {
+            resolve(res);
+          } else {
+            this.userVerified = false;
+            reject({message: 'Email not verified'});
+          }
+        }, err => {
+          reject(err);
+        })
     });
   }
 
