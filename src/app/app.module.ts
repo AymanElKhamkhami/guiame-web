@@ -7,6 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 // import { AngularFireModule } from 'angularfire2';
 // import { AngularFireDatabaseModule } from 'angularfire2/database';
 // import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -21,16 +22,15 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { VerifiedUserComponent } from './components/verified-user/verified-user.component';
+import { DefaultComponent } from './components/default/default.component';
+import { PromptComponent } from './components/prompt/prompt.component';
 
 //Services
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './services/auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
+import { FormService } from './services/form.service';
 import { initializeApp } from '../../node_modules/firebase';
-import { DefaultComponent } from './components/default/default.component';
-import { PromptComponent } from './components/prompt/prompt.component';
-
-
 
 @NgModule({
   declarations: [
@@ -55,6 +55,7 @@ import { PromptComponent } from './components/prompt/prompt.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
+    ReactiveFormsModule
   ],
   providers: [
     AuthenticationService,
@@ -63,7 +64,8 @@ import { PromptComponent } from './components/prompt/prompt.component';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
-    }
+    },
+    FormService
   ],
   bootstrap: [AppComponent]
 })

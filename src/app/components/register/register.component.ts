@@ -1,8 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
+import { FormService } from '../../services/form.service';
 import { Router } from '@angular/router'
 import { MatDialogRef } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Register } from '../../models/user/register.model';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+
+// function hasPunctuation(punctuation: string, errorType: string) {
+//   return function(input: FormControl) {
+//     return input.value.indexOf(punctuation) >= 0 ?
+//         null :
+//         { [errorType]: true };
+//   };
+// }
 
 @Component({
   selector: 'app-register',
@@ -11,17 +22,39 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class RegisterComponent implements OnInit {
 
-  registerUserData = {};
-  registerError: boolean;
-  registerErrorMessage;
+  public registerForm: FormGroup;
+  public formErrors = {
+    name: '',
+    surename: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  };
+  
+  registerUserData: Register;
+  submitError: boolean;
+  submitErrorMessage;
   loading: boolean;
 
   constructor(private _dialogRef: MatDialogRef<RegisterComponent>, private _auth: AuthenticationService,
-    private _router: Router) { }
+    private _router: Router, public form: FormBuilder, public formService: FormService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.buildForm();
   }
 
+
+  buildForm() {
+    this.registerForm = this.form.group({
+      name: ['', [Validators.required, Validators.minLength(6), this.formService.validateCharacters]],
+      surename: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]]
+    });
+
+    this.registerForm.valueChanges.subscribe((data) => {
+      this.formErrors = this.formService.validateForm(this.registerForm, this.formErrors, true)
+    });
+  }
 
   registerUser() {
     // this._auth.varifyEmail(this.registerUserData)
@@ -36,8 +69,8 @@ export class RegisterComponent implements OnInit {
     //       this.registerErrorMessage = 'Error sending verification email';
     //     });
 
-    
-    this.registerError = false;
+    //this.formService.markFormGroupTouched(this.registerForm);
+    this.submitError = false;
     this.loading = true;
     this._auth.registerUser(this.registerUserData)
       .then(res => {
@@ -50,10 +83,12 @@ export class RegisterComponent implements OnInit {
         err => {
           console.log(err);
           this.loading = false;
-          this.registerError = true;
-          this.registerErrorMessage = err.message;
+          this.submitError = true;
+          this.submitErrorMessage = err.message;
         });
   }
+
+
 
   //local registration
   // registerUser() {
