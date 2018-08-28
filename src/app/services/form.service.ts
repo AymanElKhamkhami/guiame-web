@@ -21,12 +21,17 @@ export class FormService {
     const messages = {
       required: 'This field is required',
       email: 'This email address is invalid',
+      minlength: 'The password must be at least 6 characters',
       invalid_characters: (matches: any[]) => {
 
         let matchedCharacters = matches;
 
         matchedCharacters = matchedCharacters.reduce((characterString, character, index) => {
           let string = characterString;
+
+          if(/\s/.test(character))
+            character = 'whitespace';
+            
           string += character;
 
           if (matchedCharacters.length !== index + 1) {
@@ -38,6 +43,9 @@ export class FormService {
 
         return `These characters are not allowed: ${matchedCharacters}`;
       },
+      invalid_password: (errors: any[]) => {
+        return errors.join('\n');
+      }
     };
 
     return messages;
@@ -59,7 +67,7 @@ export class FormService {
         if (control && !control.valid) {
           if (!checkDirty || (control.dirty || control.touched)) {
             for (const key in control.errors) {
-              if (key && key !== 'invalid_characters') {
+              if (key && ['invalid_characters','invalid_password'].indexOf(key) === -1) {
                 formErrors[field] = formErrors[field] || messages[key];
               } else {
                 formErrors[field] = formErrors[field] || messages[key](control.errors[key]);
@@ -73,8 +81,9 @@ export class FormService {
     return formErrors;
   }
 
-  public validateCharacters(control: FormControl) {
-    const validCharacters = /[^\s\w,.:&\/()+%'`@-]/;
+
+  public forbiddenCharacters(control: FormControl) {
+    const validCharacters = /\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:|\s/; // /[^\s\w,.:&\/()+%'`@-]/;
     // first check if the control has a value
     if (control.value && control.value.length > 0) {
 
@@ -87,4 +96,41 @@ export class FormService {
       return null;
     }
   }
+
+
+  public validatePassword(control: FormControl) {
+    const lowerCase = /(?=.*[a-z])/;
+    const upperCase = /(?=.*[A-Z])/;
+    const numericValue = /(?=.*[0-9])	/;
+    const specialChar = /(?=.[!@#\$%\^&*-_])/;
+    let errors = [];
+    const passwordMessages = [
+      'The password must contain at least 1 lowercase alphabetical character',
+      'The password must contain at least 1 uppercase alphabetical character',
+      'The password must contain at least 1 numeric character',
+      'The password must contain at least one special character (!@#$%^&*-_)'
+    ];
+    
+
+    if (control.value && control.value.length > 0) {
+
+      // match the control value against the regular expression
+      const lowerCaseMatches = control.value.match(lowerCase);
+      const upperCaseMatches = control.value.match(upperCase);
+      const numericValueMatches = control.value.match(numericValue);
+      const specialCharMatches = control.value.match(specialChar);
+
+      if(lowerCaseMatches == null) { errors.push(passwordMessages[0]) }
+      if(upperCaseMatches == null) { errors.push(passwordMessages[1]) }
+      if(numericValueMatches == null) { errors.push(passwordMessages[2]) }
+      if(specialCharMatches == null) { errors.push(passwordMessages[3]) }
+
+      // if there are matches return an object, else return null.
+      return errors && errors.length ? { invalid_password: errors } : null;
+    } else {
+      return null;
+    }
+  }
+
+
 }

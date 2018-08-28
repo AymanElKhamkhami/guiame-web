@@ -46,9 +46,10 @@ export class RegisterComponent implements OnInit {
 
   buildForm() {
     this.registerForm = this.form.group({
-      name: ['', [Validators.required, Validators.minLength(6), this.formService.validateCharacters]],
-      surename: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]]
+      name: ['', [Validators.required, this.formService.forbiddenCharacters]],
+      surename: ['', [Validators.required, this.formService.forbiddenCharacters]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6), this.formService.validatePassword]],
     });
 
     this.registerForm.valueChanges.subscribe((data) => {

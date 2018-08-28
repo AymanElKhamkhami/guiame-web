@@ -20,6 +20,16 @@
           placeholder="Surename"  name="surename">
         <p *ngIf="formErrors.surename" class="text-danger">{{formErrors.surename}}</p>
       </div>
+      <div class="form-group">
+        <input type="text" class="form-control rounded-0" [ngClass]="{'is-invalid': formErrors.email}" formControlName="email"
+          placeholder="Email"  name="email">
+        <p *ngIf="formErrors.email" class="text-danger">{{formErrors.email}}</p>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control rounded-0" [ngClass]="{'is-invalid': formErrors.password}" formControlName="password"
+          placeholder="Password"  name="password">
+        <p *ngIf="formErrors.password" class="text-danger">{{formErrors.password}}</p>
+      </div>
       <!-- <div class="form-group">
         <input type="text" id="inputSurename" class="form-control rounded-0" [ngClass]="{'is-invalid': surename.invalid && (surename.dirty || surename.touched)}"
           placeholder="Surename" [(ngModel)]="registerUserData.surename" name="surename" #surename="ngModel" required>
